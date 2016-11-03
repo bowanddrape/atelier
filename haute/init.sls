@@ -81,6 +81,10 @@ add_write_access_to_fs_cache:
   cmd.run:
     - name: "chown -R www-data:www-data /src/haute/cache && chown www-data:www-data /src/haute/log"
 
+add_write_access_to_upload_dir:
+  cmd.run:
+    - name: "chown -R www-data:www-data /src/haute/web/uploads"
+
 add_more_write_access_to_random_files:
   cmd.run:
     - name: "touch /src/haute/web_admin/orders.xml && chown www-data:www-data /src/haute/web_admin/orders.xml"

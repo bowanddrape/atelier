@@ -1,9 +1,4 @@
 
-{% if 'couture-db' in grains['roles'] %}
-include:
-  - .db
-{% endif %}
-
 /srv/couture:
   file.recurse:
     - source: salt://couture/src
@@ -23,7 +18,15 @@ nodejs:
 npm:
   pkg.installed
 
+node-less:
+  pkg.installed
 
 cd /srv/couture && npm install 2>/dev/null:
   cmd.run
+
+
+{% if 'couture-db' in grains['roles'] %}
+include:
+  - .db
+{% endif %}
 

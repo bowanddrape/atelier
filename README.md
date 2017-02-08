@@ -27,15 +27,15 @@ git clone https://github.com/bowanddrape/haute.git /srv/salt/deploy/haute
 
 # minion
 
+
+sudo hostname _project_env_mainrole_
 ```
-sudo hostname haute-prod-0?
-echo "haute-prod-0?" | sudo tee /etc/hostname
-sudo apt-get install salt-minion
-```
-TODO: automate editing /etc/salt/minion to point to the right master
-```
+echo "$(hostname)" | sudo tee /etc/hostname
+echo "127.0.0.1 $(hostname)" | sudo tee -a /etc/hosts
+sudo apt-get -y install salt-minion
 echo "$(hostname)" | sudo tee /etc/salt/minion_id
 ```
+TODO: automate editing /etc/salt/minion to point to the right master (10.0.0.158)
 
 For micro instances
 ```
@@ -43,5 +43,5 @@ sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
 sudo chmod 0600 /var/swap.1
 sudo /sbin/mkswap /var/swap.1
 sudo /sbin/swapon /var/swap.1
-echo "/var/swap.1 swap swap defaults 0 0" >> /etc/fstab
+echo "/var/swap.1 swap swap defaults 0 0" | sudo tee -a /etc/fstab
 ```

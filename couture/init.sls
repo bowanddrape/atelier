@@ -21,6 +21,9 @@ npm:
 node-less:
   pkg.installed
 
+sendmail:
+  pkg.installed
+
 cd /srv/couture && npm install 2>/dev/null:
   cmd.run
 

@@ -8,25 +8,27 @@ postgresql-server-dev-9.5:
 postgresql-9.5-plv8:
   pkg.installed
 
-#pgxnclient:
-#  pkg.installed
-
-# git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/ubuntu/depot_tools:
-# cd /home/ubuntu && /home/ubuntu/depot_tools/fetch v8:
-# PATH=/home/ubuntu/depot_tools:"$PATH" ./depot_tools/gclient sync:
-# cd /home/ubuntu/v8 && make GYPFLAGS="-Dcomponent=shared_library" x64.release:
-# ln -sf /home/ubuntu/v8/out/x64.release/lib.target/* /usr/lib/:
-# ln -sf /home/ubuntu/v8/include/*.h /usr/include/:
-
-
-expect:
-  pkg.installed
-
 sudo -u postgres createdb couture || true:
   cmd.run
 
 sudo -u postgres createuser -s -w root || true:
   cmd.run
 
-bash /srv/couture/psql_setup.sh:
+sudo -u postgres psql -c "ALTER ROLE root WITH PASSWORD 'password';" || true:
   cmd.run
+
+/etc/postgresql/9.5/main/postgresql.conf:
+  file.managed:
+    - source: salt://couture/resources/postgresql.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: postgresql-server-dev-9.5
+
+/etc/postgresql/9.5/main/pg_hba.conf:
+  file.managed:
+    - source: salt://couture/resources/pg_hba.conf
+    - user: root
+    - group: root
+    - mode: 644

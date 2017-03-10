@@ -7,6 +7,10 @@ base:
    - match: compound
    - couture
 
+  'G@roles:couture-db':
+   - match: compound
+   - couture.db-master
+
   'G@roles:haute':
    - match: compound
    - haute

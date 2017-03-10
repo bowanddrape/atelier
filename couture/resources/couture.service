@@ -1,0 +1,11 @@
+[Unit]
+Description=Couture Webapp
+
+[Service]
+Environment=/srv/couture/.env
+WorkingDirectory=/srv/couture/
+ExecStart=/usr/bin/node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

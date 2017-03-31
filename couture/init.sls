@@ -64,3 +64,14 @@ systemctl stop couture.service:
 systemctl start couture.service:
   cmd.run
 
+{% if 'couture-cron' in grains['roles'] %}
+/etc/systemd/system/couture_hourly.service:
+  file.managed:
+    - source: salt://couture/resources/couture_hourly.service
+    - user: root
+    - group: root
+    - mode: 644
+enable couture_hourly timer:
+  cmd.run:
+   - name: systemctl daemon-reload && systemctl enable couture_hourly && systemctl start couture_hourly
+{% endif %}

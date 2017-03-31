@@ -1,0 +1,9 @@
+[Unit]
+Description=Couture hourly
+
+[Service]
+Environment=/srv/couture/.env
+WorkingDirectory=/srv/couture/
+ExecStart=/usr/bin/nodejs scripts/import_haute_orders.js 2>&1 >/var/log/import_haute_orders.log && /usr/bin/nodejs scripts/order_emails.js 2>&1 >/var/log/order_emails.log
+Restart=always
+RestartSec=36000

@@ -1,0 +1,6 @@
+[Unit]
+Description=Couture hourly
+
+[Service]
+WorkingDirectory=/srv/couture/
+ExecStart=/usr/bin/nodejs /srv/couture/scripts/import_haute_orders.js

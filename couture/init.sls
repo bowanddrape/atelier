@@ -65,13 +65,31 @@ systemctl start couture.service:
   cmd.run
 
 {% if 'couture-cron' in grains['roles'] %}
-/etc/systemd/system/couture_hourly.service:
+/etc/systemd/system/couture_import_haute.service:
   file.managed:
-    - source: salt://couture/resources/couture_hourly.service
+    - source: salt://couture/resources/couture_import_haute.service
+    - user: root
+    - group: root
+    - mode: 644
+/etc/systemd/system/couture_import_haute.timer:
+  file.managed:
+    - source: salt://couture/resources/couture_import_haute.timer
+    - user: root
+    - group: root
+    - mode: 644
+/etc/systemd/system/couture_emails.service:
+  file.managed:
+    - source: salt://couture/resources/couture_emails.service
+    - user: root
+    - group: root
+    - mode: 644
+/etc/systemd/system/couture_emails.timer:
+  file.managed:
+    - source: salt://couture/resources/couture_emails.timer
     - user: root
     - group: root
     - mode: 644
 enable couture_hourly timer:
   cmd.run:
-   - name: systemctl daemon-reload && systemctl enable couture_hourly && systemctl start couture_hourly
+   - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
 {% endif %}

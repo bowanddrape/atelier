@@ -19,6 +19,7 @@ sudo apt-get update
 # master
 
 ```
+sudo apt-get update
 sudo apt-get install salt-master
 sudo apt-get install salt-ssh
 sudo mkdir -p /srv/salt/deploy
@@ -27,9 +28,9 @@ git clone https://github.com/bowanddrape/haute.git /srv/salt/deploy/haute
 
 # minion
 
-
 sudo hostname _project_env_mainrole_
 ```
+sudo apt-get update
 echo "$(hostname)" | sudo tee /etc/hostname
 echo "127.0.0.1 $(hostname)" | sudo tee -a /etc/hosts
 sudo apt-get -y install salt-minion

@@ -27,6 +27,12 @@ node-less:
 sendmail:
   pkg.installed
 
+libglu1-mesa:
+  pkg.installed
+
+xorg:
+  pkg.installed
+
 cd /srv/couture && npm install 2>/dev/null:
   cmd.run
 
@@ -39,6 +45,13 @@ cd /srv/couture && npm install 2>/dev/null:
     - mode: 644
     - require:
       - pkg: postgresql-server-dev-9.5
+
+/etc/rc.local:
+  file.managed:
+    - source: salt://couture/resources/rc.local
+    - user: root
+    - group: root
+    - mode: 744
 
 {% if 'prod' in grains['roles'] %}
 /srv/couture/.env:

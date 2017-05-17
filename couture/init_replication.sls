@@ -7,6 +7,7 @@ sudo -u postgres rm -rf /var/lib/postgresql/9.5/main:
 
 # Starting base backup as replicator
 # FIXME this doesn't work as it asks for a password
+# FIXME for staging, the backup url is 10.0.0.220!
 sudo -u postgres pg_basebackup -X stream -h 10.0.0.120 -D /var/lib/postgresql/9.5/main -U replicator -v -P:
   cmd.run
 

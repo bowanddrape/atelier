@@ -2,12 +2,12 @@
 include:
   - .db
 
-copy_couture_src_to_/srv/couture:
+copy couture source code to /srv/couture:
  file.recurse:
    - name: /srv/couture
    - source: salt://couture/src
 
-setup_nodejs_7.x:
+setup nodejs_7.x:
  cmd.run:
    - name: "bash /srv/couture/nodejs_setup_7.x" 
 

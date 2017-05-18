@@ -13,7 +13,7 @@ setup nodejs_7.x:
 
 #Install required packages
 # package-name:
-#   pkg.installed ()
+#   pkg.installed (pkg uses the native package manager)
 
 build-essential:
   pkg.installed
@@ -39,12 +39,13 @@ libglu1-mesa:
 xorg:
   pkg.installed
 
-cd /srv/couture && npm install 2>/dev/null:
-  cmd.run
+run npm install and ignore stderr:
+  cmd.run:
+    - name: "cd /srv/couture && npm install 2>/dev/null"
 
-
-/etc/postgresql/9.5/main/postgresql.conf:
+copy postgres slave config into targets:
   file.managed:
+    - name: /etc/postgresql/9.5/main/postgresql.conf
     - source: salt://couture/resources/postgresql_slave.conf
     - user: root
     - group: root
@@ -52,23 +53,26 @@ cd /srv/couture && npm install 2>/dev/null:
     - require:
       - pkg: postgresql-server-dev-9.5
 
-/etc/rc.local:
+copy rc.local to /etc/:
   file.managed:
+    - name: /etc/rc.local
     - source: salt://couture/resources/rc.local
     - user: root
     - group: root
     - mode: 744
 
 {% if 'prod' in grains['roles'] %}
-/srv/couture/.env:
+if target type is prod then copy .env:
   file.managed:
+    - name: /srv/couture/.env
     - source: salt://couture/resources/.env
     - user: root
     - group: root
 {% endif %}
 
-/etc/systemd/system/couture.service:
+copy couture.service:
   file.managed:
+    - name: /etc/systemd/system/couture.service
     - source: salt://couture/resources/couture.service
     - user: root
     - group: root

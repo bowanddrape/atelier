@@ -2,12 +2,18 @@
 include:
   - .db
 
-/srv/couture:
-  file.recurse:
-    - source: salt://couture/src
+copy_couture_src_to_/srv/couture:
+ file.recurse:
+   - name: /srv/couture
+   - source: salt://couture/src
 
-bash /srv/couture/nodejs_setup_7.x:
-  cmd.run
+setup_nodejs_7.x:
+ cmd.run:
+   - name: "bash /srv/couture/nodejs_setup_7.x" 
+
+#Install required packages
+# package-name:
+#   pkg.installed ()
 
 build-essential:
   pkg.installed

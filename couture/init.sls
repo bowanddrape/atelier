@@ -70,6 +70,15 @@ if target type is prod then copy .env:
     - group: root
 {% endif %}
 
+{% if 'stag' in grains['roles'] %}
+if target type is prod then copy .env:
+  file.managed:
+    - name: /srv/couture/.env
+    - source: salt://couture/resources/.env_stag
+    - user: root
+    - group: root
+{% endif %}
+
 copy couture.service:
   file.managed:
     - name: /etc/systemd/system/couture.service

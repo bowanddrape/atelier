@@ -45,3 +45,7 @@ base:
    - match: compound
    - haute.cron
 
+  'G@roles:influxdb':
+   - match: compound
+   - influxdb
+

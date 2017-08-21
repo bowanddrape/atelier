@@ -30,9 +30,6 @@ npm:
 node-less:
   pkg.installed
 
-sendmail:
-  pkg.installed
-
 libglu1-mesa:
   pkg.installed
 
@@ -124,4 +121,51 @@ systemctl start couture.service:
 enable couture_hourly timer:
   cmd.run:
    - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
+
+set our dkim key:
+  file.managed:
+    - name: /etc/dkimkeys/default.private
+    - source: salt://couture/resources/default.private
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: 600
+
+opendkim:
+  pkg.installed
+
+sendmail:
+  pkg.installed
+
+configure opendkim:
+  file.managed:
+    - name: /etc/opendkim.conf
+    - source: salt://couture/resources/opendkim.conf
+    - user: root
+    - group: root
+    - mode: 644
+
+configure sendmail:
+  file.managed:
+    - name: /etc/mail/sendmail.mc
+    - source: salt://couture/resources/sendmail.mc
+    - user: root
+    - group: smmsp
+    - mode: 644
+
+regenerate sendmail conf:
+  cmd.run:
+    - name: m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
+
+restart opendkim:
+  service.running:
+    - name: opendkim
+    - enable: True
+    - reload: True
+
+restart sendmail:
+  service.running:
+    - name: sendmail
+    - enable: True
+    - reload: True
 {% endif %}

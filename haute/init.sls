@@ -105,4 +105,14 @@ setup_fstab:
     - name: /etc/fstab
     - source: salt://haute/resources/fstab
 
+ln_efs_originals:
+  cmd.run:
+    - name: "ln -s /efs/originals /src/haute/web/originals"
 
+ln_efs_renders:
+  cmd.run:
+    - name: "ln -s /efs/renders /src/haute/web/renders"
+
+ln_sf:
+  cmd.run:
+    - name: "ln -s /src/haute/lib/symfony-1.4.20/data/web/sf /src/haute/web/sf"

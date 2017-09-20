@@ -1,0 +1,6 @@
+[Unit]
+Description=Couture hourly shipment update
+
+[Service]
+WorkingDirectory=/srv/couture/
+ExecStart=/usr/bin/nodejs /srv/couture/scripts/update_shipping_status.js

@@ -106,6 +106,18 @@ systemctl start couture.service:
     - user: root
     - group: root
     - mode: 644
+/etc/systemd/system/couture_shipment.service:
+  file.managed:
+    - source: salt://couture/resources/couture_shipment.service
+    - user: root
+    - group: root
+    - mode: 644
+/etc/systemd/system/couture_shipment.timer:
+  file.managed:
+    - source: salt://couture/resources/couture_shipment.timer
+    - user: root
+    - group: root
+    - mode: 644
 /etc/systemd/system/couture_emails.service:
   file.managed:
     - source: salt://couture/resources/couture_emails.service
@@ -120,7 +132,7 @@ systemctl start couture.service:
     - mode: 644
 enable couture_hourly timer:
   cmd.run:
-   - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
+   - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_shipment && systemctl enable couture_shipment.timer && systemctl start couture_shipment.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
 
 set our dkim key:
   file.managed:

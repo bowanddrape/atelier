@@ -18,6 +18,9 @@ setup nodejs_7.x:
 build-essential:
   pkg.installed
 
+pkg-config:
+  pkg.installed
+
 libpq-dev:
   pkg.installed
 

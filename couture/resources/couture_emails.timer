@@ -1,8 +1,8 @@
 [Unit]
-Description=Run hourly
+Description=Run every 15 mins
 
 [Timer]
-OnCalendar=hourly
+OnCalendar=*:0/15
 Persistent=true
 
 [Install]

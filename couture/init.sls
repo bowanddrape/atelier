@@ -33,7 +33,16 @@ npm:
 node-less:
   pkg.installed
 
-libglu1-mesa:
+libglu1-mesa-dev:
+  pkg.installed
+
+libxi-dev:
+  pkg.installed
+
+#libglew-dev:
+#  pkg.installed
+
+graphicsmagick:
   pkg.installed
 
 xorg:
@@ -45,13 +54,13 @@ run npm install and ignore stderr:
 
 copy postgres slave config into targets:
   file.managed:
-    - name: /etc/postgresql/9.5/main/postgresql.conf
+    - name: /etc/postgresql/9.6/main/postgresql.conf
     - source: salt://couture/resources/postgresql_slave.conf
     - user: root
     - group: root
     - mode: 644
     - require:
-      - pkg: postgresql-server-dev-9.5
+      - pkg: postgresql-server-dev-9.6
 
 copy rc.local to /etc/:
   file.managed:
@@ -96,91 +105,91 @@ systemctl stop couture.service:
 systemctl start couture.service:
   cmd.run
 
-{% if 'couture-cron' in grains['roles'] %}
-/etc/systemd/system/couture_import_haute.service:
-  file.managed:
-    - source: salt://couture/resources/couture_import_haute.service
-    - user: root
-    - group: root
-    - mode: 644
-/etc/systemd/system/couture_import_haute.timer:
-  file.managed:
-    - source: salt://couture/resources/couture_import_haute.timer
-    - user: root
-    - group: root
-    - mode: 644
-/etc/systemd/system/couture_shipment.service:
-  file.managed:
-    - source: salt://couture/resources/couture_shipment.service
-    - user: root
-    - group: root
-    - mode: 644
-/etc/systemd/system/couture_shipment.timer:
-  file.managed:
-    - source: salt://couture/resources/couture_shipment.timer
-    - user: root
-    - group: root
-    - mode: 644
-/etc/systemd/system/couture_emails.service:
-  file.managed:
-    - source: salt://couture/resources/couture_emails.service
-    - user: root
-    - group: root
-    - mode: 644
-/etc/systemd/system/couture_emails.timer:
-  file.managed:
-    - source: salt://couture/resources/couture_emails.timer
-    - user: root
-    - group: root
-    - mode: 644
-enable couture_hourly timer:
-  cmd.run:
-   - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_shipment && systemctl enable couture_shipment.timer && systemctl start couture_shipment.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
-
-set our dkim key:
-  file.managed:
-    - name: /etc/dkimkeys/default.private
-    - source: salt://couture/resources/default.private
-    - makedirs: True
-    - user: root
-    - group: root
-    - mode: 600
-
-opendkim:
-  pkg.installed
-
-sendmail:
-  pkg.installed
-
-configure opendkim:
-  file.managed:
-    - name: /etc/opendkim.conf
-    - source: salt://couture/resources/opendkim.conf
-    - user: root
-    - group: root
-    - mode: 644
-
-configure sendmail:
-  file.managed:
-    - name: /etc/mail/sendmail.mc
-    - source: salt://couture/resources/sendmail.mc
-    - user: root
-    - group: smmsp
-    - mode: 644
-
-regenerate sendmail conf:
-  cmd.run:
-    - name: m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
-
-restart opendkim:
-  service.running:
-    - name: opendkim
-    - enable: True
-    - reload: True
-
-restart sendmail:
-  service.running:
-    - name: sendmail
-    - enable: True
-    - reload: True
-{% endif %}
+#{% if 'couture-cron' in grains['roles'] %}
+#/etc/systemd/system/couture_import_haute.service:
+#  file.managed:
+#    - source: salt://couture/resources/couture_import_haute.service
+#    - user: root
+#    - group: root
+#    - mode: 644
+#/etc/systemd/system/couture_import_haute.timer:
+#  file.managed:
+#    - source: salt://couture/resources/couture_import_haute.timer
+#    - user: root
+#    - group: root
+#    - mode: 644
+#/etc/systemd/system/couture_shipment.service:
+#  file.managed:
+#    - source: salt://couture/resources/couture_shipment.service
+#    - user: root
+#    - group: root
+#    - mode: 644
+#/etc/systemd/system/couture_shipment.timer:
+#  file.managed:
+#    - source: salt://couture/resources/couture_shipment.timer
+#    - user: root
+#    - group: root
+#    - mode: 644
+#/etc/systemd/system/couture_emails.service:
+#  file.managed:
+#    - source: salt://couture/resources/couture_emails.service
+#    - user: root
+#    - group: root
+#    - mode: 644
+#/etc/systemd/system/couture_emails.timer:
+#  file.managed:
+#    - source: salt://couture/resources/couture_emails.timer
+#    - user: root
+#    - group: root
+#    - mode: 644
+#enable couture_hourly timer:
+#  cmd.run:
+#   - name: systemctl daemon-reload && systemctl enable couture_import_haute && systemctl enable couture_import_haute.timer && systemctl start couture_import_haute.timer && systemctl enable couture_shipment && systemctl enable couture_shipment.timer && systemctl start couture_shipment.timer && systemctl enable couture_emails && systemctl enable couture_emails.timer && systemctl start couture_emails.timer
+#
+#set our dkim key:
+#  file.managed:
+#    - name: /etc/dkimkeys/default.private
+#    - source: salt://couture/resources/default.private
+#    - makedirs: True
+#    - user: root
+#    - group: root
+#    - mode: 600
+#
+#opendkim:
+#  pkg.installed
+#
+#sendmail:
+#  pkg.installed
+#
+#configure opendkim:
+#  file.managed:
+#    - name: /etc/opendkim.conf
+#    - source: salt://couture/resources/opendkim.conf
+#    - user: root
+#    - group: root
+#    - mode: 644
+#
+#configure sendmail:
+#  file.managed:
+#    - name: /etc/mail/sendmail.mc
+#    - source: salt://couture/resources/sendmail.mc
+#    - user: root
+#    - group: smmsp
+#    - mode: 644
+#
+#regenerate sendmail conf:
+#  cmd.run:
+#    - name: m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
+#
+#restart opendkim:
+#  service.running:
+#    - name: opendkim
+#    - enable: True
+#    - reload: True
+#
+#restart sendmail:
+#  service.running:
+#    - name: sendmail
+#    - enable: True
+#    - reload: True
+#{% endif %}

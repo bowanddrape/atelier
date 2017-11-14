@@ -1,11 +1,18 @@
 
-postgresql:
+add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main":
+  cmd.run 
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -:
+  cmd.run
+apt-get update:
+  cmd.run
+
+postgresql-9.6:
   pkg.installed
 
-postgresql-server-dev-9.5:
+postgresql-server-dev-9.6:
   pkg.installed
 
-postgresql-9.5-plv8:
+postgresql-9.6-plv8:
   pkg.installed
 
 sudo -u postgres createdb couture || true:
@@ -17,7 +24,7 @@ sudo -u postgres createuser -s -w root || true:
 sudo -u postgres psql -c "ALTER ROLE root WITH PASSWORD 'password';" || true:
   cmd.run
 
-/etc/postgresql/9.5/main/pg_hba.conf:
+/etc/postgresql/9.6/main/pg_hba.conf:
   file.managed:
     - source: salt://couture/resources/pg_hba.conf
     - user: root

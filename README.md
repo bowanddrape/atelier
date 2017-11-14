@@ -8,7 +8,7 @@ A workspace for tools and instrumentation
 Getting Started
 ---
 
-# using [ami-3ab1fa2d](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-3ab1fa2d)
+# using [ami-6cd01a16](https://console.aws.amazon.com/ec2/home?region=us-east-1#launchAmi=ami-6cd01a16)
 
 ```
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/latest/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
